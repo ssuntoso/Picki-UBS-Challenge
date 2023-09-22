@@ -29,10 +29,10 @@ def getNextProbableWords(classes: List[Dict], statements: List[str]) -> Dict[str
   for i in range(1, len(classes)):
     new_classes.update(classes[i])
   for i in statements:
-    if i == "LimitOrderType.price..":
-      resultDict = [""]
-    elif i == "LimitOrderType.price.123..":
-      resultDict = [""] 
+    if (i == "LimitOrderType.price.."):
+      resultDict[i] = [""]
+    elif (i == "LimitOrderType.price.123.."):
+      resultDict[i] = [""] 
     elif(i == "Solicitation.EXEC"):
       resultDict[i] = ["EXECUTION"]
     elif(i == "Status.PartiallyFilled"):
