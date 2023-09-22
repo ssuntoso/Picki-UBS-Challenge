@@ -29,24 +29,27 @@ def getNextProbableWords(classes: List[Dict], statements: List[str]) -> Dict[str
   for i in range(1, len(classes)):
     new_classes.update(classes[i])
   for i in statements:
-    if i[-2:] == "..":
-      i = i[:-1]
-    try:
-      keys = i.split(".")
-      if i[-1] == ".":
-        keys.remove('')
-        data = getFromDict(new_classes, keys)
-      else:
-        data = getFromDict(new_classes, keys[:-1])
-        if type(data) is list:
-          filteredList = []
-          for j in data:
-            if keys[-1] in j:
-              filteredList.append(j)
-          data = filteredList
+    if(i == ""):
+      data = list(new_classes.keys())
+      data.sort()
       resultDict[i] = data[0:5]
-    except:
-      resultDict[i] = [""]
+    else:
+      try:
+        keys = i.split(".")
+        if i[-1] == ".":
+          keys.remove('')
+          data = getFromDict(new_classes, keys)
+        else:
+          data = getFromDict(new_classes, keys[:-1])
+          if type(data) is list:
+            filteredList = []
+            for j in data:
+              if keys[-1] in j:
+                filteredList.append(j)
+            data = filteredList
+        resultDict[i] = data[0:5]
+      except:
+        resultDict[i] = [""]
   return resultDict
 
 @app.route('/lazy-developer', methods=['POST'])
