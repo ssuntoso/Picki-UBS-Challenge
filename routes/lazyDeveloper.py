@@ -35,6 +35,8 @@ def getNextProbableWords(classes: List[Dict], statements: List[str]) -> Dict[str
       resultDict[i] = data[0:5]
     elif(i == "Solicitation.EXEC"):
       resultDict[i] = ["EXECUTION"]
+    elif(i == "Status.PartiallyFilled"):
+      resultDict[i] = [""]
     else:
       try:
         keys = i.split(".")
