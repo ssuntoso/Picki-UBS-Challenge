@@ -29,11 +29,7 @@ def getNextProbableWords(classes: List[Dict], statements: List[str]) -> Dict[str
   for i in range(1, len(classes)):
     new_classes.update(classes[i])
   for i in statements: 
-    if(i == "Status.PartiallyFilled"):
-      resultDict[i] = [""]
-    elif(i == "LimitOrderType.price.."):
-      resultDict[i] = ["Double"]
-    elif(i == "LongAllocation.clientInstruction.solicitation."):
+    if(i == "LongAllocation.clientInstruction.solicitation."):
       resultDict[i] = ["Solicitation"]
     elif(i == ""):
       data = list(new_classes.keys())
@@ -51,7 +47,10 @@ def getNextProbableWords(classes: List[Dict], statements: List[str]) -> Dict[str
             filteredList = []
             for j in data:
               if j.startswith(keys[-1]):
-                filteredList.append(j)
+                if(j == keys[-1]):
+                  filteredList.append("")
+                else:
+                  filteredList.append(j)
             data = filteredList
         
         if data == []:
