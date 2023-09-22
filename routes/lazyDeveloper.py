@@ -33,6 +33,8 @@ def getNextProbableWords(classes: List[Dict], statements: List[str]) -> Dict[str
       data = list(new_classes.keys())
       data.sort()
       resultDict[i] = data[0:5]
+    elif(i == "Solicitation.EXEC"):
+      resultDict[i] = ["EXECUTION"]
     else:
       try:
         keys = i.split(".")
