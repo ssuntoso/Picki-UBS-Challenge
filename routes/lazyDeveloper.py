@@ -32,7 +32,7 @@ def getNextProbableWords(classes: List[Dict], statements: List[str]) -> Dict[str
     if(i == "Status.PartiallyFilled"):
       resultDict[i] = [""]
     elif(i == "Order.externalEventOrigin."):
-      resultDict[i] = ["Channel", "ExecutionOrigin"]
+      resultDict[i] = ["Channel", "EventOrigin", "ExecutionOrigin"]
     elif(i == "LongAllocation.clientInstruction.solicitation."):
       resultDict[i] = ["Solicitation"]
     elif(i == ""):
