@@ -50,7 +50,10 @@ def getNextProbableWords(classes: List[Dict], statements: List[str]) -> Dict[str
         resultDict[i] = data[0:5]
       except:
         resultDict[i] = [""]
-  return resultDict
+  if resultDict == []:
+    return [""]
+  else:
+    return resultDict
 
 @app.route('/lazy-developer', methods=['POST'])
 def lazyDeveloper():
