@@ -62,8 +62,8 @@ def lazyDeveloper():
     classes = data["classes"]
     statements = data["statements"]
     output = getNextProbableWords(classes, statements)
-    #logging.info("data sent for evaluation {}".format(data))
-    #logging.info("My result :{}".format(output))
+    logging.info("data sent for evaluation {}".format(data))
+    logging.info("My result :{}".format(output))
     return json.dumps(output)
 
 
