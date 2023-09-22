@@ -31,7 +31,7 @@ def getNextProbableWords(classes: List[Dict], statements: List[str]) -> Dict[str
   for i in statements:
     if i == "LimitOrderType.price..":
       resultDict = [""]
-    if i == "LimitOrderType.price.123..":
+    elif i == "LimitOrderType.price.123..":
       resultDict = [""] 
     elif(i == "Solicitation.EXEC"):
       resultDict[i] = ["EXECUTION"]
