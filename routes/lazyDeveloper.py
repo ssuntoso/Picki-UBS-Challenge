@@ -47,13 +47,14 @@ def getNextProbableWords(classes: List[Dict], statements: List[str]) -> Dict[str
               if keys[-1] in j:
                 filteredList.append(j)
             data = filteredList
-        resultDict[i] = data[0:5]
+        
+        if data == []:
+          resultDict[i] = [""]
+        else:
+          resultDict[i] = data[0:5]
       except:
         resultDict[i] = [""]
-  if resultDict == []:
-    return [""]
-  else:
-    return resultDict
+  return resultDict
 
 @app.route('/lazy-developer', methods=['POST'])
 def lazyDeveloper():
@@ -61,8 +62,8 @@ def lazyDeveloper():
     classes = data["classes"]
     statements = data["statements"]
     output = getNextProbableWords(classes, statements)
-    logging.info("data sent for evaluation {}".format(data))
-    logging.info("My result :{}".format(output))
+    #logging.info("data sent for evaluation {}".format(data))
+    #logging.info("My result :{}".format(output))
     return json.dumps(output)
 
 
