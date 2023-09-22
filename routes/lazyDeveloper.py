@@ -29,6 +29,8 @@ def getNextProbableWords(classes: List[Dict], statements: List[str]) -> Dict[str
   for i in range(1, len(classes)):
     new_classes.update(classes[i])
   for i in statements:
+    if i[-2:] == "..":
+      i = i[:-1]
     try:
       keys = i.split(".")
       if i[-1] == ".":
