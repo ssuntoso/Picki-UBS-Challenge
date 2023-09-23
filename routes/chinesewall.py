@@ -8,7 +8,7 @@ from routes import app
 logger = logging.getLogger(__name__)
 
 
-@app.route('/chinese-wall', methods=['POST'])
+@app.route('/chinese-wall', methods=['GET'])
 def chinesewall():
     result = {
         "1": "Fluffy",
