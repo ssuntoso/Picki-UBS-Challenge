@@ -41,10 +41,17 @@ def min_distance(case):
     return -1  # it's impossible to reach all delivery locations
 
 
+
+
 @app.route('/teleportation', methods=['POST'])
 def teleportation():
-    data = request.get_json()
+    data = request.data.decode("utf-8")  # Decode using utf-8 encoding
     logging.info("data sent for evaluation {}".format(data))
-    result = min_distance(data)
+    
+    # Assuming your data is a json string, you can convert it to a Python object
+    import json
+    data_object = json.loads(data)
+    
+    result = min_distance(data_object)
     logging.info("My result :{}".format(result))
-    return json.dumps(result)
+    return str(result)
