@@ -7,3 +7,4 @@ app = Flask(__name__)
 import routes.square
 import routes.lazyDeveloper
 import routes.greedyMonkey
+import routes.digitalColony
