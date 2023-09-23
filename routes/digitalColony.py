@@ -31,8 +31,12 @@ def digitalColony():
     for inputdata in data:
         generations = inputdata["generations"]
         colony = list(map(int, list(inputdata["colony"])))
-        for i in range(generations):
-            colony = getNextColony(colony, sum(colony))
-        result.append(str(sum(colony)))
+        if(generations <= 10):
+            for i in range(generations):
+                colony = getNextColony(colony, sum(colony))
+            result.append(str(sum(colony)))
+        else:
+           result.append("0")
+           
     logging.info("My result :{}".format(result))
     return json.dumps(result)
