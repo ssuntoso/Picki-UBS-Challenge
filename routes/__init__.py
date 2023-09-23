@@ -15,3 +15,4 @@ import routes.chinesewall
 import routes.Teleportation
 import routes.chinesewall
 import routes.piechart
+import routes.parking
