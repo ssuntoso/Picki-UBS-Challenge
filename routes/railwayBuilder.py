@@ -41,8 +41,8 @@ def Work(InputList):
 @app.route('/railway-builder', methods=['POST'])
 def railwayBuilder():
     data = request.get_json()
-    result = Work(data)
     logging.info("data sent for evaluation {}".format(data))
+    result = Work(data)
     logging.info("My result :{}".format(result))
     return json.dumps(result)
 
