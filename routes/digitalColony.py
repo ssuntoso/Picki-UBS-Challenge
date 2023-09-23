@@ -21,10 +21,7 @@ def getNextColony(colony, weight):
     
     return result
 
-@app.route('/digital-colony', methods=['POST'])
-def digitalColony():
-    data = request.get_json()
-    logging.info("data sent for evaluation {}".format(data))
+def getFinalWeight(data):
     result = []
     for inputdata in data:
         generations = inputdata["generations"]
@@ -32,6 +29,12 @@ def digitalColony():
         for i in range(generations):
             colony = getNextColony(colony, sum(colony))
         result.append(str(sum(colony)))
-           
+    return result
+
+@app.route('/digital-colony', methods=['POST'])
+def digitalColony():
+    data = request.get_json()
+    logging.info("data sent for evaluation {}".format(data))
+    result = getFinalWeight(data)
     logging.info("My result :{}".format(result))
     return json.dumps(result)
