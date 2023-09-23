@@ -15,7 +15,7 @@ def chinesewall():
         "2": "Galactic",
         "3": "Mangoes",
         "4": "Subatomic",
-        "5": "Throne"
+        "5": "Jellyfish"
         }
     logging.info("My result :{}".format(result))
     return json.dumps(result)
