@@ -37,8 +37,6 @@ def getNextProbableWords(classes: List[Dict], statements: List[str]) -> Dict[str
      resultDict[i] = [""]
     elif(i == "Order.submissionTime."):
      resultDict[i] = [""]
-    elif(i == "LongAllocation.clientInstruction.solicitation."):
-     resultDict[i] = [""]
     elif(i == ""):
       data = list(new_classes.keys())
       data.sort()
