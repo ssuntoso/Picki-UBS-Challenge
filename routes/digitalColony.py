@@ -1,6 +1,5 @@
 import json
 import logging
-from numba import jit
 
 from flask import request
 

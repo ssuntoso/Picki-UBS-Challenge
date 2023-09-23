@@ -39,7 +39,7 @@ def greedyMonkey():
     data = request.get_json()
     logging.info("data sent for evaluation {}".format(data))
     input_value = data
-    result = input_value * input_value
+    result = MonkeBrain(input_value)
     logging.info("My result :{}".format(result))
 
     return json.dumps(result)
