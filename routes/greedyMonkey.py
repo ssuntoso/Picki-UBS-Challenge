@@ -14,21 +14,24 @@ def MonkeBrain(inputDict):
     max_vol = inputDict["v"]
     food = inputDict["f"]
     
-    # Create a 3D table for dynamic programming
-    dp = [[[0 for item in range(max_vol+1)] for item in range(max_weight+1)] for item in range(len(food)+1)]
+    dp = [[[-1 for _ in range(max_vol+1)] for _ in range(max_weight+1)] for _ in range(len(food)+1)]
     
-    for i in range(1, len(food)+1):
+    def knapsack(i, w, v):
+        if i == 0 or w == 0 or v == 0:
+            return 0
+        if dp[i][w][v] != -1:
+            return dp[i][w][v]
+        
         weight, vol, value = food[i-1]
-        for w in range(max_weight+1):
-            for v in range(max_vol+1):
-                if weight > max_weight or vol > max_vol:
-                    continue
-                elif weight <= w and vol <= v:
-                    dp[i][w][v] = max(dp[i-1][w][v], dp[i-1][w-weight][v-vol] + value)
-                else:
-                    dp[i][w][v] = dp[i-1][w][v]
-                    
-    return dp[-1][-1][-1]
+        # If the item is too heavy or too voluminous, skip it
+        if weight > w or vol > v:
+            dp[i][w][v] = knapsack(i-1, w, v)
+        else:
+            dp[i][w][v] = max(knapsack(i-1, w, v),
+                               value + knapsack(i-1, w-weight, v-vol))
+            
+        return dp[i][w][v]
+    return knapsack(len(food), max_weight, max_vol)
 
 
 
