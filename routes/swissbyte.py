@@ -13,39 +13,37 @@ def evaluate_code(challenge):
 
     def execute_code(code, variables):
         i = 0
-        skip_stack = []  # stack to handle nested if's
+        if_depth = 0
+        skip = False
         while i < len(code):
             line = code[i].split()
 
-            if len(line) == 0:
-                i += 1
-                continue
-
-            if skip_stack:  # if we're in a skip mode
-                if line[0] == 'endif':
-                    skip_stack.pop()  # we've finished skipping this block
-                elif line[0] == 'if':
-                    skip_stack.append(i)  # we're entering a new nested skip block
-                i += 1
-                continue
-
-            if line[0] == 'fail':
-                return "false", variables
-
-            elif line[0] == 'if':
+            if line[0] == 'if':
+                if_depth += 1
                 if len(line) >= 4:
                     var = variables.get(line[1], int(line[1]))
                     condition = line[2]
                     comparison = variables.get(line[3], int(line[3]))
 
-                    condition_not_met = (condition == '==' and var != comparison) or \
-                                        (condition == '!=' and var == comparison) or \
-                                        (condition == '>' and var <= comparison) or \
-                                        (condition == '<' and var >= comparison)
+                    condition_not_met = ((condition == '==' and var != comparison) or 
+                                         (condition == '!=' and var == comparison) or 
+                                         (condition == '>' and var <= comparison) or 
+                                         (condition == '<' and var >= comparison))
                     if condition_not_met:
-                        skip_stack.append(i)
+                        skip = True
                 else:
                     raise ValueError("Invalid 'if' statement")
+
+            if skip:
+                if line[0] == 'endif':
+                    if_depth -= 1
+                    if if_depth == 0:
+                        skip = False
+                i += 1
+                continue
+
+            if line[0] == 'fail':
+                return "false", variables
 
             elif line[1] == '=':
                 if len(line) >= 3:
