@@ -32,7 +32,7 @@ def MonkeBrain(inputDict):
 
 
 
-@app.route('/greedyMonkey', methods=['POST'])
+@app.route('/greedymonkey', methods=['POST'])
 def greedyMonkey():
 
 # Debugging Purpose
