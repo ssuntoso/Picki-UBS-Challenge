@@ -222,10 +222,28 @@ def input_to_output(request_payload):
     return controls
 
 
+# @app.route('/maze', methods=['POST'])
+# def maze():
+#     data = request.get_json()
+#     logging.info("data sent for evaluation {}".format(data))
+#     result = input_to_output(data)
+#     logging.info("My result :{}".format(result))
+#     return json.dumps(result)
+
+action_index = 0
+
 @app.route('/maze', methods=['POST'])
 def maze():
+    global action_index
     data = request.get_json()
     logging.info("data sent for evaluation {}".format(data))
     result = input_to_output(data)
     logging.info("My result :{}".format(result))
-    return json.dumps(result)
+    
+    if action_index >= len(result):
+        action_index = 0 # reset for next /maze request
+
+    action = result[action_index]
+    action_index += 1
+
+    return json.dumps({"playerAction": action})
