@@ -10,3 +10,4 @@ import routes.greedyMonkey
 import routes.digitalColony
 import routes.railwayBuilder
 import routes.maze
+import routes.swissbyte
