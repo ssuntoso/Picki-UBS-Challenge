@@ -44,7 +44,7 @@ def railwayBuilder():
     result = Work(data)
     logging.info("data sent for evaluation {}".format(data))
     logging.info("My result :{}".format(result))
-    return json.dumps(data)
+    return json.dumps(result)
 
 
 
