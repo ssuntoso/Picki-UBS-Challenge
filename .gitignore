@@ -1,2 +1,5 @@
 venv
 /env
+/__pycache__
+/routes/__init__
+/routes/__pycache__
