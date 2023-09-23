@@ -33,11 +33,11 @@ def getNextProbableWords(classes: List[Dict], statements: List[str]) -> Dict[str
       resultDict[i] = ["Solicitation"]
     elif(i == "Allocation."):
      resultDict[i] = [""]
-    elif(i == "Status.PartiallyFilled"):
+    elif(i == "Aioldfjbghoidfjboidfjoi"):
      resultDict[i] = ["a"]
-    elif(i == "Status.PartiallyFilld"):
+    elif(i == "Order.submissionTime."):
      resultDict[i] = ["a"]
-    elif(i == "LongAllocation.clientInstruction.clientContact."):
+    elif(i == "LongAllocation.clientInstruction.solicitation."):
      resultDict[i] = ["a"]
     elif(i == ""):
       data = list(new_classes.keys())
