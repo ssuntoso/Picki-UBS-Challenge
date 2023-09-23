@@ -7,26 +7,27 @@ from routes import app
 
 logger = logging.getLogger(__name__)
 
-def getNextColony(colony, weight):
-    result = [colony[0]]
+def get_next_colony(colony, weight):
+    if len(colony) == 1:
+        return colony
 
-    for i in range(1, len(colony)):
-        num1, num2 = colony[i-1], colony[i]
-        sign = (num1 - num2) % 10
-        newDigit = (weight + sign) % 10
-        result.extend([newDigit, num2])
+    num1, num2 = colony[0], colony[1]
+    sign = (num1 - num2) % 10
+    new_digit = (weight + sign) % 10
 
-    return result
+    return [num1, new_digit] + get_next_colony(colony[1:], weight)
 
-def getFinalWeight(data):
+def get_final_weight(data):
     result = []
     for inputdata in data:
         generations = inputdata["generations"]
         colony = list(map(int, list(inputdata["colony"])))
         colony_sum = sum(colony)
-        for i in range(generations):
-            colony = getNextColony(colony, colony_sum)
+        
+        for _ in range(generations):
+            colony = get_next_colony(colony, colony_sum)
             colony_sum = sum(colony)
+        
         result.append(str(colony_sum))
     return result
 
