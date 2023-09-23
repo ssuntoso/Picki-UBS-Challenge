@@ -15,9 +15,9 @@ def drawPieChart(data):
         porto.append(row["price"]*row["quantity"])
     total = sum(porto)
     for i in range(len(porto)):
-        porto[i] = math.radians((porto[i]/total)*365)
+        porto[i] = (porto[i]/total)*6.28318531
     for i in reversed(porto):
-        pie.append(i+pie[-1])
+        pie.append(round(i+pie[-1],7))
     return pie
 
 @app.route('/pie-chart', methods=['POST'])
