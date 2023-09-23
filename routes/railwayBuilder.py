@@ -37,10 +37,9 @@ def Work(InputList):
     for i in ListedInputList:
         max_railway_Length = i[0]
         number_of_railway_component = i[1]
-        railway_components = i[2]
-        
+        railway_components = sorted(i[2])  # sort nums in ascending order
         result.append(total_combination(max_railway_Length, railway_components))
-
+        
     return result
 
 @app.route('/railway-builder', methods=['POST'])
