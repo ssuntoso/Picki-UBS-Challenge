@@ -12,18 +12,19 @@ from routes import app
 logger = logging.getLogger(__name__)
 
 
-def total_combination(total, nums, memo=None, i=0):
+def total_combination(total, component_count, nums, memo=None, i=0):
     if memo is None:
         memo = {}
-    if (total, i) in memo:
-        return memo[(total, i)]
-    if total == 0:
+    if (total, component_count, i) in memo:
+        return memo[(total, component_count, i)]
+    if total == 0 and component_count == 0:
         return 1
-    elif total < 0 or i == len(nums):
+    elif total < 0 or component_count < 0 or i == len(nums):
         return 0
     else:
-        memo[(total, i)] = total_combination(total - nums[i], nums, memo, i) + total_combination(total, nums, memo, i + 1)
-        return memo[(total, i)]
+        memo[(total, component_count, i)] = total_combination(total - nums[i], component_count - 1, nums, memo, i + 1) \
+                                             + total_combination(total, component_count, nums, memo, i + 1)
+        return memo[(total, component_count, i)]
 
 def Work(InputList):
     ListedInputList = []
@@ -38,7 +39,7 @@ def Work(InputList):
         max_railway_Length = i[0]
         number_of_railway_component = i[1]
         railway_components = sorted(i[2])  # sort nums in ascending order
-        result.append(total_combination(max_railway_Length, railway_components))
+        result.append(total_combination(max_railway_Length, number_of_railway_component, railway_components))
         
     return result
 
