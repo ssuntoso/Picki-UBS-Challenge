@@ -22,29 +22,25 @@ def MonkeBrain(inputDict):
     food_weight_based.sort(key=lambda item: item[3], reverse=True)
     food_vol_based.sort(key=lambda item: item[3], reverse=True)
 
-    # Initialize variables to keep track of the best solution
-    best_value = 0
-    best_weight = 0
-    best_vol = 0
+    total_value_weight_based = 0
+    for w, v, val, _ in food_weight_based:
+        if w <= max_weight and v <= max_vol:
+            max_weight -= w
+            max_vol -= v
+            total_value_weight_based += val
 
-    for _ in range(2):  # Run the loop twice, once for each strategy
-        curr_weight = max_weight
-        curr_vol = max_vol
-        curr_value = 0
-        food = food_weight_based if _ == 0 else food_vol_based  # Choose the strategy based on the iteration
-        
-        for w, v, val, _ in food:
-            if w <= curr_weight and v <= curr_vol:
-                curr_weight -= w
-                curr_vol -= v
-                curr_value += val
+    max_weight = inputDict["w"]  # reset max_weight
+    max_vol = inputDict["v"]  # reset max_vol
 
-        if curr_value > best_value:  # If the current solution is better, update the best solution
-            best_value = curr_value
-            best_weight = curr_weight
-            best_vol = curr_vol
+    total_value_vol_based = 0
+    for w, v, val, _ in food_vol_based:
+        if w <= max_weight and v <= max_vol:
+            max_weight -= w
+            max_vol -= v
+            total_value_vol_based += val
 
-    return best_value
+    return max(total_value_weight_based, total_value_vol_based)
+
 
 @app.route('/greedymonkey', methods=['POST'])
 def greedyMonkey():
