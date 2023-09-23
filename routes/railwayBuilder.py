@@ -12,13 +12,18 @@ from routes import app
 logger = logging.getLogger(__name__)
 
 
-def total_combination(total, nums, i=0):
-    if total==0:
+def total_combination(total, nums, memo=None, i=0):
+    if memo is None:
+        memo = {}
+    if (total, i) in memo:
+        return memo[(total, i)]
+    if total == 0:
         return 1
-    elif total <0 or i == len(nums):
+    elif total < 0 or i == len(nums):
         return 0
     else:
-        return total_combination(total - nums[i], nums, i) +  total_combination(total, nums, i + 1)
+        memo[(total, i)] = total_combination(total - nums[i], nums, memo, i) + total_combination(total, nums, memo, i + 1)
+        return memo[(total, i)]
 
 def Work(InputList):
     ListedInputList = []
