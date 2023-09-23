@@ -14,20 +14,32 @@ def MonkeBrain(inputDict):
     max_vol = inputDict["v"]
     food = inputDict["f"]
 
-    # Compute the value density for each item
-    food = [(w, v, val, val/(w*v) if w*v != 0 else float('inf')) for w, v, val in food]
+    # Compute the value densities for each item
+    food_weight_based = [(w, v, val, val/w if w != 0 else float('inf')) for w, v, val in food]
+    food_vol_based = [(w, v, val, val/v if v != 0 else float('inf')) for w, v, val in food]
 
     # Sort by value density
-    food.sort(key=lambda item: item[3], reverse=True)
+    food_weight_based.sort(key=lambda item: item[3], reverse=True)
+    food_vol_based.sort(key=lambda item: item[3], reverse=True)
 
-    total_value = 0
-    for w, v, val, _ in food:
+    total_value_weight_based = 0
+    for w, v, val, _ in food_weight_based:
         if w <= max_weight and v <= max_vol:
             max_weight -= w
             max_vol -= v
-            total_value += val
+            total_value_weight_based += val
 
-    return total_value
+    max_weight = inputDict["w"]  # reset max_weight
+    max_vol = inputDict["v"]  # reset max_vol
+
+    total_value_vol_based = 0
+    for w, v, val, _ in food_vol_based:
+        if w <= max_weight and v <= max_vol:
+            max_weight -= w
+            max_vol -= v
+            total_value_vol_based += val
+
+    return max(total_value_weight_based, total_value_vol_based)
 
 
 @app.route('/greedymonkey', methods=['POST'])
