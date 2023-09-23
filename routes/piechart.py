@@ -16,8 +16,40 @@ def drawPieChart(data):
     total = sum(porto)
     for i in range(len(porto)):
         porto[i] = (porto[i]/total)*6.28318531
-    for i in reversed(porto):
-        pie.append(round(i+pie[-1],7))
+        
+    # readjustment section
+    diffs = []
+    for p in porto:
+        if p < 0.00314159:
+            # calculate difference
+            diff = 0.00314159 - p
+            diffs.append([diff,porto.index(p)])
+            # redefine
+            porto[porto.index(p)] = 0.00314159
+    
+    for diff in diffs:
+        diff_indices = [i[1] for i in diffs]
+        total = sum([i for i in porto if porto.index(i) not in diff_indices])
+        for p in porto:
+            if porto.index(p) not in diff_indices:
+                porto[porto.index(p)] = p - diff[0]*(p/total)
+                
+    # reverse and sum
+    porto.sort()
+    porto.reverse()
+    porto.insert(0,0.0)
+    
+    print(porto)
+    
+    pie = []
+    c = 0
+    for p in porto:
+        if c == 0:
+            pie.append(p)
+        else:
+            pie.append(p+pie[c-1])
+        c += 1
+        
     return pie
 
 @app.route('/pie-chart', methods=['POST'])
@@ -26,7 +58,7 @@ def piechart():
     logging.info("data sent for evaluation {}".format(data))
     part = data.get("part")
     if part == "FIRST":
-        result = drawPieChart(data.get("data"))
+        result = drawPieChart(data["data"])
     else:
         result = []
     logging.info("My result :{}".format(result))
