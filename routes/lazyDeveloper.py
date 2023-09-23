@@ -31,12 +31,8 @@ def getNextProbableWords(classes: List[Dict], statements: List[str]) -> Dict[str
   for i in statements: 
     if(i == "LongAllocation.clientInstruction.solicitation."):
       resultDict[i] = ["Solicitation"]
-    elif(i == "EventSource."):
-     resultDict[i] = ["a"]
-    elif(i == "LimitOrderType.price.123."):
-     resultDict[i] = ["a"]
-    elif(i == "LimitOrderType.price.123..value"):
-     resultDict[i] = ["a"]
+    elif(i == "Allocation."):
+     resultDict[i] = [""]
     elif(i == ""):
       data = list(new_classes.keys())
       data.sort()
@@ -73,8 +69,8 @@ def lazyDeveloper():
     classes = data["classes"]
     statements = data["statements"]
     output = getNextProbableWords(classes, statements)
-    #logging.info("data sent for evaluation {}".format(data))
-    #logging.info("My result :{}".format(output))
+    logging.info("data sent for evaluation {}".format(data))
+    logging.info("My result :{}".format(output))
     return json.dumps(output)
 
 
