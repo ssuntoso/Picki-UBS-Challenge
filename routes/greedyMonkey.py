@@ -38,7 +38,7 @@ def greedyMonkey():
 # Debugging Purpose
     data = request.get_json()
     logging.info("data sent for evaluation {}".format(data))
-    input_value = data.get("input")
+    input_value = data
     result = input_value * input_value
     logging.info("My result :{}".format(result))
 
