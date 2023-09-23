@@ -13,3 +13,5 @@ import routes.maze
 import routes.swissbyte
 import routes.chinesewall
 import routes.teleportation
+import routes.chinesewall
+import routes.piechart
