@@ -16,36 +16,46 @@ def evaluate_code(challenge):
         while i < len(code):
             line = code[i].split()
 
+            if len(line) == 0:
+                i += 1
+                continue
+
             if line[0] == 'fail':
                 return "false", variables
 
             elif line[0] == 'if':
-                var = variables[line[1]] if line[1] in variables else int(line[1])
-                condition = line[2]
-                comparison = variables[line[3]] if line[3] in variables else int(line[3])
+                if len(line) >= 4:
+                    var = variables.get(line[1], int(line[1]))
+                    condition = line[2]
+                    comparison = variables.get(line[3], int(line[3]))
 
-                if (condition == '==' and var != comparison) or \
-                (condition == '!=' and var == comparison) or \
-                (condition == '>' and var <= comparison) or \
-                (condition == '<' and var >= comparison):
-                    while code[i] != 'endif':
-                        i += 1
+                    if (condition == '==' and var != comparison) or \
+                    (condition == '!=' and var == comparison) or \
+                    (condition == '>' and var <= comparison) or \
+                    (condition == '<' and var >= comparison):
+                        while code[i] != 'endif':
+                            i += 1
+                else:
+                    raise ValueError("Invalid 'if' statement")
 
             elif line[1] == '=':
-                if len(line) == 3:
-                    variables[line[0]] = variables[line[2]] if line[2] in variables else int(line[2])
-                else:
-                    var1 = variables[line[2]] if line[2] in variables else int(line[2])
-                    var2 = variables[line[4]] if line[4] in variables else int(line[4])
+                if len(line) >= 3:
+                    if len(line) == 3:
+                        variables[line[0]] = variables.get(line[2], int(line[2]))
+                    else:
+                        var1 = variables.get(line[2], int(line[2]))
+                        var2 = variables.get(line[4], int(line[4]))
 
-                    if line[3] == '+':
-                        variables[line[0]] = var1 + var2
-                    elif line[3] == '-':
-                        variables[line[0]] = var1 - var2
-                    elif line[3] == '*':
-                        variables[line[0]] = var1 * var2
-                    elif line[3] == '/':
-                        variables[line[0]] = var1 // var2
+                        if line[3] == '+':
+                            variables[line[0]] = var1 + var2
+                        elif line[3] == '-':
+                            variables[line[0]] = var1 - var2
+                        elif line[3] == '*':
+                            variables[line[0]] = var1 * var2
+                        elif line[3] == '/':
+                            variables[line[0]] = var1 // var2
+                else:
+                    raise ValueError("Invalid assignment")
 
             i += 1
 
@@ -60,7 +70,6 @@ def evaluate_code(challenge):
         })
 
     return {'outcomes': outcomes}
-
 
 @app.route('/swissbyte', methods=['POST'])
 def swissbyte():
