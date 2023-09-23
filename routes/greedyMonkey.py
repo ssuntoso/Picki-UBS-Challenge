@@ -15,31 +15,31 @@ def MonkeBrain(inputDict):
     food = inputDict["f"]
 
     # Compute the value densities for each item
-    food_weight_based = [(w, v, val, val/w if w != 0 else float('inf')) for w, v, val in food]
-    food_vol_based = [(w, v, val, val/v if v != 0 else float('inf')) for w, v, val in food]
+    food = [(w, v, val, min(val/w if w != 0 else float('inf'), val/v if v != 0 else float('inf'))) for w, v, val in food]
 
-    # Sort by value density
-    food_weight_based.sort(key=lambda item: item[3], reverse=True)
-    food_vol_based.sort(key=lambda item: item[3], reverse=True)
+    # Sort by minimum value density
+    food.sort(key=lambda item: item[3], reverse=True)
 
-    total_value_weight_based = 0
-    for w, v, val, _ in food_weight_based:
+    total_value = 0
+    for i in range(len(food)):
+        w, v, val, _ = food[i]
         if w <= max_weight and v <= max_vol:
+            # Take the whole item
             max_weight -= w
             max_vol -= v
-            total_value_weight_based += val
+            total_value += val
+        else:
+            # Consider taking a fraction of this item and the rest of the next item
+            for j in range(i+1, len(food)):
+                next_w, next_v, next_val, _ = food[j]
+                if next_w < max_weight and next_v < max_vol:
+                    fraction = min(max_weight/w, max_vol/v)
+                    total_value += val * fraction
+                    max_weight -= w * fraction
+                    max_vol -= v * fraction
+                    break
 
-    max_weight = inputDict["w"]  # reset max_weight
-    max_vol = inputDict["v"]  # reset max_vol
-
-    total_value_vol_based = 0
-    for w, v, val, _ in food_vol_based:
-        if w <= max_weight and v <= max_vol:
-            max_weight -= w
-            max_vol -= v
-            total_value_vol_based += val
-
-    return max(total_value_weight_based, total_value_vol_based)
+    return total_value
 
 
 @app.route('/greedymonkey', methods=['POST'])
