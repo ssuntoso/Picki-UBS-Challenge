@@ -41,7 +41,7 @@ def min_distance(case):
     return -1  # it's impossible to reach all delivery locations
 
 
-@app.route('/teleportation ', methods=['POST'])
+@app.route('/teleportation', methods=['POST'])
 def teleportation():
     data = request.get_json()
     logging.info("data sent for evaluation {}".format(data))
