@@ -42,7 +42,7 @@ def min_distance(case):
 
 
 @app.route('/teleportation ', methods=['POST'])
-def evaluate():
+def teleportation():
     data = request.get_json()
     logging.info("data sent for evaluation {}".format(data))
     result = min_distance(data)
