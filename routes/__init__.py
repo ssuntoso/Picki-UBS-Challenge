@@ -12,3 +12,4 @@ import routes.railwayBuilder
 import routes.maze
 import routes.swissbyte
 import routes.chinesewall
+import routes.teleportation
