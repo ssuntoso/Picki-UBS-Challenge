@@ -9,35 +9,32 @@ from routes import app
 
 logger = logging.getLogger(__name__)
 
+
 def min_distance(case):
     k = case['k']
     p = [[0, 0]] + case['p']  # add the starting point to the list of teleportation hubs
     q = case['q']
     n = len(q)
     m = len(p)
-    
+
     # Define the distance matrix
     dist = [[math.sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2) for b in p] for a in q]
 
-    visited = [[False]*(k+1) for _ in range(n)]
-    queue = [(dist[0][j], 0, k - int(j != 0)) for j in range(m)]
-    heapq.heapify(queue)
+    # Start from the first delivery point
+    current = 0
+    total_distance = 0
 
-    while queue:
-        d, node, orbs = heapq.heappop(queue)
-        if visited[node][orbs]:
-            continue
-        visited[node][orbs] = True
-        if node == n-1:
-            return round(d, 2)
-        for j in range(m):
-            new_dist = d + dist[node+1][j]
-            if orbs > 0 and not visited[node+1][orbs-1]:
-                heapq.heappush(queue, (new_dist, node+1, orbs-1))
-            elif j == 0 and not visited[node+1][orbs]:
-                heapq.heappush(queue, (new_dist, node+1, orbs))
-                
-    return -1  # it's impossible to reach all delivery locations
+    while current < n:
+        # Find the nearest hub
+        nearest_hub = min(range(m), key=lambda j: dist[current][j])
+
+        # Add the distance to the total
+        total_distance += dist[current][nearest_hub]
+
+        # Move to the next delivery point
+        current += 1
+
+    return round(total_distance, 2)
 
 @app.route('/teleportation', methods=['POST'])
 def teleportation():
