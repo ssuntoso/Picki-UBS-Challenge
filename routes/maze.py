@@ -1,5 +1,6 @@
 import json
 import logging
+import time
 
 from flask import request
 
@@ -32,20 +33,26 @@ def locate_start(map):
     list_num = 0
     for m in map:
         if "B" in m or 2 in m:
-            start = [list_num, m.index("B")]
+            try:
+                start = [list_num, m.index("B")]
+            except:
+                start = [list_num, m.index(2)]
         list_num += 1
-        print(m)
-    print(f"start: {start}")
+    #     print(m)
+    # print(f"start: {start}")
     return start
 
 def locate_end(map):
     list_num = 0
     for m in map:
         if "C" in m or 3 in m:
-            end = [list_num, m.index("C")]
+            try:
+                end = [list_num, m.index("C")]
+            except:
+                end = [list_num, m.index(3)]    
         list_num += 1
-        print(m)
-    print(f"start: {end}")
+    #     print(m)
+    # print(f"start: {end}")
     return end
 
 def transform_map_to_minesweeper(map):
@@ -56,7 +63,7 @@ def transform_map_to_minesweeper(map):
         c = 0
         for e in m:
             bomb = 0
-            print(f"ELEMENT: {e}")
+            # print(f"ELEMENT: {e}")
             if e == 0:
                 up_index = list_num - 1
                 down_index = list_num + 1
@@ -67,50 +74,61 @@ def transform_map_to_minesweeper(map):
                 right_index = c + 1
                 left_index = c - 1
                 
-                print("----------")
-                print(m[right_index])
-                if m[right_index] == 0:
-                    print("right")
-                    bomb += 1
+                try:
+                    # print("----------")
+                    # print(m[right_index])
+                    if m[right_index] == 0:
+                        # print("right")
+                        bomb += 1
+                except:
+                    pass
                 
-                print("----------")
-                print(m[left_index])
-                if m[left_index] == 0:
-                    print("left")
-                    bomb += 1
-                
+                try:
+                    # print("----------")
+                    # print(m[left_index])
+                    if m[left_index] == 0:
+                        # print("left")
+                        bomb += 1
+                except:
+                    pass
+                                
                 # look up down
                 up_index = list_num - 1
                 down_index = list_num + 1
                 
-                print("----------")
-                print(map[up_index][c])
-                if map[up_index][c] == 0:
-                    print("up")
-                    bomb += 1
-                    
-                print("----------")
-                print(map[down_index][c])
-                if map[down_index][c] == 0:
-                    print("down")
-                    bomb += 1
-            
+                try:
+                #     print("----------")
+                #     print(map[up_index][c])
+                    if map[up_index][c] == 0:
+                        # print("up")
+                        bomb += 1
+                except:
+                    pass
+                
+                try:    
+                    # print("----------")
+                    # print(map[down_index][c])
+                    if map[down_index][c] == 0:
+                        # print("down")
+                        bomb += 1
+                except:
+                    pass
             
                     
             # update location marker
             minesweeper_m.append(bomb)
             
-            print("==========================================")
-            print("index_current_location: " + str(c))
+            # print("==========================================")
+            # print("index_current_location: " + str(c))
             
             c += 1
             
         minesweeper_map.append(minesweeper_m)
         
         show_map(minesweeper_map)
-        print("list_num: " + str(list_num))
-        print("up index: " + str(up_index))
-        print("down index: " + str(down_index))
+        # print("list_num: " + str(list_num))
+        # print("up index: " + str(up_index))
+        # print("down index: " + str(down_index))
         
         
         list_num += 1
@@ -123,16 +141,16 @@ def minesweeper_map_cleanup(map, start, end):
         col = 0
         for e in m:
             coord = [row,col]
-            print(e)
-            print(coord)
+            # print(e)
+            # print(coord)
 
             if (e == 3) and (coord != start) and (coord != end):
-                print("redefine")
+                # print("redefine")
                 row_to_change = map[row]
                 row_to_change[col] = 0
                 map[row] = row_to_change
-                print(map[row])
-            print("======================")
+                # print(map[row])
+            # print("======================")
             col += 1
         row += 1
     
@@ -153,37 +171,49 @@ def walk(location_index, end, map, steps):
         new_row = row
         new_col = c
 
-        print("right: " + str(map[row][right_index]))
-        if map[row][right_index] != 0 and [row, c+1] not in steps:
-            print("right")
-            control = ("right")
-            move = True
-            new_col = c + 1
-
-        print("left: " + str(map[row][left_index]))
-        if map[row][left_index] != 0 and [row, c-1] not in steps:
-            print("left")
-            control = ("left")
-            move = True
-            new_col = c - 1
+        try:
+            print("right: " + str(map[row][right_index]))
+            if map[row][right_index] != 0 and [row, c+1] not in steps:
+                print("right")
+                control = ("right")
+                move = True
+                new_col = c + 1
+        except:
+            pass
+        
+        try:
+            print("left: " + str(map[row][left_index]))
+            if map[row][left_index] != 0 and [row, c-1] not in steps:
+                print("left")
+                control = ("left")
+                move = True
+                new_col = c - 1
+        except:
+            pass
         
         # look up down
         up_index = row - 1
         down_index = row + 1
 
-        print("up: " + str(map[up_index][c]))
-        if map[up_index][c] != 0 and [row-1, c] not in steps:
-            print("up")
-            control = ("up")
-            move = True
-            new_row = row - 1
-
-        print("down: " + str(map[down_index][c]))
-        if map[down_index][c] != 0  and [row+1, c] not in steps:
-            print("down")
-            control = ("down")
-            move = True 
-            new_row = row + 1
+        try:    
+            print("up: " + str(map[up_index][c]))
+            if map[up_index][c] != 0 and [row-1, c] not in steps:
+                print("up")
+                control = ("up")
+                move = True
+                new_row = row - 1
+        except:
+            pass
+        
+        try:
+            print("down: " + str(map[down_index][c]))
+            if map[down_index][c] != 0  and [row+1, c] not in steps:
+                print("down")
+                control = ("down")
+                move = True 
+                new_row = row + 1
+        except:
+            pass
             
         # get new coord
         if move == True:
@@ -196,32 +226,32 @@ def walk(location_index, end, map, steps):
         print("done")
 
 def input_to_output(request_payload):
+    
     map = request_payload['nearby']
-    map = (transform_map(map))  
+    show_map(map)
+    # map = (transform_map(map))  
     start = locate_start(map) 
     try:
         end = locate_end(map)
     except:
         end = [0,0]
     
-    for i in range(len(map) * len(map[0])):
-        map = (transform_map_to_minesweeper(map))
-        map = minesweeper_map_cleanup(map,start,end)
+    # for i in range(len(map) * len(map[0])):
+    #     map = (transform_map_to_minesweeper(map))
+    #     map = minesweeper_map_cleanup(map,start,end)
     
     steps = [start]
     controls = []
     location_index = start
-    while True:
-        if location_index != end:
-            location_index, control = walk(location_index, end, map, steps)
-            steps.append(location_index)
-            controls.append(control)
-            print(location_index)
-        elif location_index == end:
-            print("end")
-            break
-        print("-----------------------")
-        # time.sleep(5)
+    if location_index != end:
+        location_index, control = walk(location_index, end, map, steps)
+        steps.append(location_index)
+        controls.append(control)
+        print(location_index)
+    elif location_index == end:
+        print("end")
+    print("-----------------------")
+    # time.sleep(5)
     print(len(steps))
     print(steps)
     print(controls)
